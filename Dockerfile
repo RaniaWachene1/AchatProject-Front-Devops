@@ -1,4 +1,4 @@
-# Stage 1: Build Angular Application
+# Use Node.js image for building the Angular app
 FROM node:18 AS build
 
 # Set the working directory inside the container
@@ -19,14 +19,11 @@ COPY . .
 # Build the Angular application for production
 RUN ng build --configuration production
 
-# Stage 2: Serve with Nginx
+# Use a lightweight Nginx image to serve the Angular app
 FROM nginx:latest
 
-# Set environment variables for Nginx
-ENV NGINX_PORT=80
-
 # Copy the built Angular app from the previous stage to Nginx's web root directory
-COPY --from=build /app/dist/crudtuto-Front /usr/share/nginx/html
+COPY --from=build /app/dist/gh-front-end /usr/share/nginx/html
 
 # Copy custom Nginx configuration
 COPY src/nginx/etc/conf.d/default.conf /etc/nginx/conf.d/default.conf
