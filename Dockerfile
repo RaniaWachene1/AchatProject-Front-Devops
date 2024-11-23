@@ -24,9 +24,8 @@ FROM nginx:latest
 
 # Copy the built Angular app from the previous stage to Nginx's web root directory
 COPY --from=build /app/dist/gh-front-end /usr/share/nginx/html
+COPY src/nginx/etc/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
-# Custom Nginx configuration (optional: ensure the path exists and is valid)
-COPY src/nginx/default.conf /etc/nginx/conf.d/default.conf
 
 
 # Expose port 80
