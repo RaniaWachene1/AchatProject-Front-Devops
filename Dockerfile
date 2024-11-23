@@ -10,8 +10,8 @@ COPY package*.json ./
 # Install Angular CLI globally
 RUN npm install -g @angular/cli@17.3.1
 
-# Install project dependencies
-RUN npm install
+# Install project dependencies (with legacy-peer-deps to avoid conflicts)
+RUN npm install --legacy-peer-deps
 
 # Copy the entire project to the container
 COPY . .
@@ -25,8 +25,8 @@ FROM nginx:latest
 # Copy the built Angular app from the previous stage to Nginx's web root directory
 COPY --from=build /app/dist/gh-front-end /usr/share/nginx/html
 
-# Copy custom Nginx configuration
-COPY src/nginx/etc/conf.d/default.conf /etc/nginx/conf.d/default.conf
+# Custom Nginx configuration (optional: ensure the path exists and is valid)
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80
 EXPOSE 80
